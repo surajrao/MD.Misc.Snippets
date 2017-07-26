@@ -13,8 +13,8 @@ public static class DisplayFusionFunction
     
 	public static void Run(IntPtr windowHandle)
 	{
-        static uint[] monitorIds = BFS.Monitor.GetMonitorIDs();
-        static Rectangle[] monitorBounds = BFS.Monitor.GetMonitorBounds();
+        uint[] monitorIds = BFS.Monitor.GetMonitorIDs();
+        Rectangle[] monitorBounds = BFS.Monitor.GetMonitorBounds();
 
 		// Get currently focused window.
         IntPtr focus = BFS.Window.GetFocusedWindow();
@@ -68,7 +68,7 @@ public static class DisplayFusionFunction
 	private static void Move(string leftWindow, string rightWindow, Rectangle monitorBounds, int leftWindowWidth)
 	{
         Move(leftWindow, monitorBounds, 0, 0, 0, leftWindowWidth);
-        Move(leftWindow, monitorBounds, 0, -leftWindowWidth, 0, 0);	
+        Move(rightWindow, monitorBounds, 0, -leftWindowWidth, 0, 0);	
 	}
 	
 	// Move a window to a monitor and resize it with a margin.

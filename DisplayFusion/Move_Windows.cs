@@ -30,7 +30,7 @@ public static class DisplayFusionFunction
         
         // Right Monitor Setup
         Move("*Outlook*", "Google Keep", monitorBounds[2], 500);
-
+        
         // Restore focus
         BFS.Window.Focus(focus);
     }
@@ -81,7 +81,7 @@ public static class DisplayFusionFunction
         for(int i = 0; i < windows.Length; i++)
         {
             int calcLeft   = left >= 0 ? left : monitorBounds.Width  + left;
-            int calcTop    = top  >= 0 ? top  : monitorBounds.Height + top;
+            int calcTop    = top  >= 0 ? top  : monitorBounds.Height + top - ToolbarHeight;
             int calcWidth  = (monitorBounds.Width  - (right + calcLeft)) % monitorBounds.Width;
             int calcHeight = (monitorBounds.Height - (top   + calcTop))  % monitorBounds.Height;
         
@@ -90,7 +90,7 @@ public static class DisplayFusionFunction
                 monitorBounds.X + calcLeft,
                 monitorBounds.Y + calcTop,
                 calcWidth > 0 ? calcWidth  : monitorBounds.Width,
-                calcHeight> 0 ? calcHeight : monitorBounds.Height
+                calcHeight> 0 ? calcHeight : monitorBounds.Height - ToolbarHeight
             );
         }
     }

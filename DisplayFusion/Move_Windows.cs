@@ -11,39 +11,39 @@ public static class DisplayFusionFunction
 {
     private const int ToolbarHeight = 30;
     
-	public static void Run(IntPtr windowHandle)
-	{
+    public static void Run(IntPtr windowHandle)
+    {
         uint[] monitorIds = BFS.Monitor.GetMonitorIDs();
         Rectangle[] monitorBounds = BFS.Monitor.GetMonitorBounds();
 
-		// Get currently focused window.
+        // Get currently focused window.
         IntPtr focus = BFS.Window.GetFocusedWindow();
 
-		// Left Monitor Setup
+        // Left Monitor Setup
         Move("*SourceTree*", monitorIds[0], false);
         Move("*Google Chrome*", monitorIds[0]);
         Move("*Developer Tools*", monitorIds[0]); 
-		
-		// Middle Monitor Setup
+        
+        // Middle Monitor Setup
         Move("* Microsoft Visual Studio*", monitorIds[1], true);
         Move("*Notepad++*", monitorBounds[1], 100);
         
-		// Right Monitor Setup
-		Move("*Outlook*", "Google Keep", monitorBounds[2], 500);
+        // Right Monitor Setup
+        Move("*Outlook*", "Google Keep", monitorBounds[2], 500);
 
         // Restore focus
         BFS.Window.Focus(focus);
-	}
-	
+    }
+    
     // #### Move functions ####
-	
-	// Move a window to a monitor and minimize / maximize it.
-	// bool? maximize:
-	//    null:  keep the same size
-	//    true:  maximize the window
-	//    false: minimize the window
-	private static void Move(string text, uint monitorId, bool? maximize = null)
-	{
+    
+    // Move a window to a monitor and minimize / maximize it.
+    // bool? maximize:
+    //    null:  keep the same size
+    //    true:  maximize the window
+    //    false: minimize the window
+    private static void Move(string text, uint monitorId, bool? maximize = null)
+    {
         IntPtr[] windows = BFS.Window.GetWindowsByText(text);
         for(int i = 0; i < windows.Length; i++)
         {
@@ -56,26 +56,26 @@ public static class DisplayFusionFunction
                     
             }
         }
-	}
-	
-	// Move a window to a monitor and resize it with a margin.
-	private static void Move(string text, Rectangle monitorBounds, int margin)
-	{
+    }
+    
+    // Move a window to a monitor and resize it with a margin.
+    private static void Move(string text, Rectangle monitorBounds, int margin)
+    {
         Move(text, monitorBounds, margin, margin, margin, margin);
-	}
-	
-	// Setup 2 windows side by side on the same monitor.
-	private static void Move(string leftWindow, string rightWindow, Rectangle monitorBounds, int leftWindowWidth)
-	{
+    }
+    
+    // Setup 2 windows side by side on the same monitor.
+    private static void Move(string leftWindow, string rightWindow, Rectangle monitorBounds, int leftWindowWidth)
+    {
         Move(leftWindow, monitorBounds, 0, 0, 0, leftWindowWidth);
-        Move(rightWindow, monitorBounds, 0, -leftWindowWidth, 0, 0);	
-	}
-	
-	// Move a window to a monitor and resize it with a margin.
-	// Margin is set like css (top, right, bottom, left)
-	// A negative margin means "X pixels from the opposite side"
-	private static void Move(string text, Rectangle monitorBounds, int top, int right, int bottom, int left)
-	{
+        Move(rightWindow, monitorBounds, 0, -leftWindowWidth, 0, 0);    
+    }
+    
+    // Move a window to a monitor and resize it with a margin.
+    // Margin is set like css (top, right, bottom, left)
+    // A negative margin means "X pixels from the opposite side"
+    private static void Move(string text, Rectangle monitorBounds, int top, int right, int bottom, int left)
+    {
         IntPtr[] windows = BFS.Window.GetWindowsByText(text);
         
         for(int i = 0; i < windows.Length; i++)
@@ -93,5 +93,5 @@ public static class DisplayFusionFunction
                 calcHeight> 0 ? calcHeight : monitorBounds.Height
             );
         }
-	}
+    }
 }

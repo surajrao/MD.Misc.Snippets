@@ -40,6 +40,9 @@ public static class DisplayFusionFunction
 
         // Windows to close
         Manage("*Slack*");
+        
+        // After moving
+        Cleanup();
 
         // Restore focus
         BFS.Window.Focus(focus);
@@ -125,5 +128,11 @@ public static class DisplayFusionFunction
                 calcHeight> 0 ? calcHeight : monitorBounds.Height
             );
         }
+    }
+    
+    // Close remaining "SWT_Window_" instances
+    private static void Cleanup()
+    {
+        Manage("SWT_Window_*");
     }
 }

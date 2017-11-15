@@ -3,6 +3,10 @@ echo.
 
 cd C:\DEV\Android\Sdk\emulator\
 
+REM ╔═══════════╗
+REM ║ List AVDs ║
+REM ╚═══════════╝
+
 emulator.exe -list-avds > avds.txt
 
 echo  Available Android Virtual Devices:
@@ -13,6 +17,10 @@ FOR /F "tokens=1 usebackq" %%i in (avds.txt) do (
   echo     !c!: %%i
 )
 endlocal
+
+REM ╔════════════╗
+REM ║ Select AVD ║
+REM ╚════════════╝
 
 echo.
 set /P id=" Select Android Virtual Device: "
@@ -27,7 +35,22 @@ for /F "%skip% delims=" %%i in (avds.txt) do if not defined avd set "avd=%%i"
 
 del avds.txt
 
+REM ╔══════════════════╗
+REM ║ Start Chosen AVD ║
+REM ╚══════════════════╝
+
 echo Starting %avd%
 echo.
 
-start emulator -avd %avd%
+start "%avd%" emulator -avd %avd%
+
+REM ╔══════════════╗
+REM ║ Start LogCat ║
+REM ╚══════════════╝
+
+title Logger: Android Virtual Device
+echo Starting LogCat
+echo.
+cd ..\platform-tools
+
+adb logcat browser:V *:S

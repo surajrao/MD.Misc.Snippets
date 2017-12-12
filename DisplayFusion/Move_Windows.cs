@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Threading;
 
 // The 'windowHandle' parameter will contain the window handle for the:
 //   - Active window when run by hotkey
@@ -14,7 +15,8 @@ public static class DisplayFusionFunction
     private enum Actions {
         None,
         Maximize,
-        Minimize
+        Minimize,
+        MaxMin
     }
     
     public static void Run(IntPtr windowHandle)
@@ -37,6 +39,7 @@ public static class DisplayFusionFunction
         
         // Right Monitor Setup
         Manage("*Outlook*", "Google Keep", monitorBounds[2], 500);
+        Manage("*WhatsApp*", monitorIds[2], Actions.MaxMin);
 
         // Windows to close
         Manage("*Slack*");
@@ -68,12 +71,13 @@ public static class DisplayFusionFunction
     }
     
     // Move a window to a monitor and minimize / maximize it.
-    // bool? maximize:
-    //    null:  keep the same size
-    //    true:  maximize the window
-    //    false: minimize the window
     private static void Manage(string text, uint monitorId, Actions resize)
     {
+        if(resize == Actions.MaxMin)
+        {
+            Manage(text, monitorId, Actions.Minimize, 500);            
+            resize = Actions.Maximize;
+        }
         IntPtr[] windows = BFS.Window.GetWindowsByText(text);
         for(int i = 0; i < windows.Length; i++)
         {
@@ -85,6 +89,22 @@ public static class DisplayFusionFunction
             else if(resize == Actions.Minimize)
                 BFS.Window.Minimize(windows[i]);
         }
+    }
+    
+    // Move a window to a monitor and minimize / maximize it with a delay.
+    private static void Manage(string text, uint monitorId, Actions resize, int timeout)
+    {
+        Timer timer = null; 
+        timer = new System.Threading.Timer(
+            (obj) =>
+            {
+                Manage(text, monitorId, resize);
+                timer.Dispose();
+            }, 
+            null,
+            timeout,
+            Timeout.Infinite
+        );
     }
     
     // Move a window to a monitor and resize it with a margin of 0.

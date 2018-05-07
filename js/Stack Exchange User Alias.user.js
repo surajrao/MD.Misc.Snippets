@@ -28,7 +28,7 @@
 
     const map = {
         123456 : "Alias1",
-        123456 : "Alias2"
+        789012 : "Alias2"
     };
 
     for(let id in map){

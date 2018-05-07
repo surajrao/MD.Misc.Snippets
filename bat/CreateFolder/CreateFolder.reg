@@ -6,4 +6,4 @@ Windows Registry Editor Version 5.00
 
 ; Enter the proper folder name here.
 [HKEY_CLASSES_ROOT\Directory\Background\shell\CreateFolder\command]
-@="C:\\DEV\\Misc\\CreateFolder\\CreateFolder.bat \"%V\""
+@="C:\\DEV\\Misc\\MD.Misc.Snippets\\bat\\CreateFolder\\CreateFolder.bat \"%V\""

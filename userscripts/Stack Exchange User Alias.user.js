@@ -87,7 +87,7 @@
 
         scope.promptOpen = true;
 
-        const alias = prompt("Please enter an alias to assign to this user.");
+        const alias = prompt("Please enter an alias to assign to this user.\nLeave empty to remove the alias.");
 
         let href;
 
@@ -102,10 +102,12 @@
         if(id) {
             e.preventDefault();
 
-            if(alias){
-                scope.map[id] = alias;
-            }else{
+            if(alias === ""){
                 delete scope.map[id];
+            } else if(alias) {
+                scope.map[id] = alias;
+            } else {
+                return;
             }
 
             GM_setValue("StackExchangeUserAlias", JSON.stringify(scope.map));

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stack Exchange User Alias
 // @description  Allow the configuration of a user alias which will be added behind a user's username on (most of) the Stack exchange network.
-// @version      0.4
+// @version      0.5
 // @match        *://stackoverflow.com/*
 // @match        *://meta.stackoverflow.com/*
 // @match        *://superuser.com/*
@@ -52,7 +52,7 @@
                 continue;
             }
 
-            const alias = ` <sup>(${scope.map[id].replace(/ /g, "&nbsp;")})</sup>`;
+            const alias = ` <sup style="display:inline-block">(${scope.map[id].replace(/ /g, "&nbsp;")})</sup>`;
             const $containers = $(".user-details, .comment-body");
             const $anchors =  $containers.find(`a[href*="users/${id}"]`);
 
@@ -60,7 +60,7 @@
                 const $elem = $(e);
                 const name = $elem.html();
 
-                if(!/[^a-zA-Z0-9]/.test(name)) { // The name can only contain letters or numbers
+                if($elem.text()) {
                     $elem.append(alias);
                 }
             });

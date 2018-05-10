@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stack Exchange User Alias
 // @description  Allow the configuration of a user alias which will be added behind a user's username on (most of) the Stack exchange network.
-// @version      0.5
+// @version      0.6
 // @match        *://stackoverflow.com/*
 // @match        *://meta.stackoverflow.com/*
 // @match        *://superuser.com/*
@@ -43,17 +43,22 @@
         }else{
             scope.map = JSON.parse(settings);
         }
-        console.log(scope.map);
+        console.log("Settings: ", scope.map);
     }
 
     function Init() {
+        const $usercard = $(".user-card-name");
+        const $containers = $(".user-details, .comment-body");
+
+        $usercard.contextmenu(AddAliasPrompt);
+        $containers.find("a").contextmenu(AddAliasPrompt);
+
         for(let id in scope.map){
             if(!scope.map[id]){
                 continue;
             }
 
             const alias = ` <sup style="display:inline-block">(${scope.map[id].replace(/ /g, "&nbsp;")})</sup>`;
-            const $containers = $(".user-details, .comment-body");
             const $anchors =  $containers.find(`a[href*="users/${id}"]`);
 
             $anchors.each((i, e) => {
@@ -64,11 +69,6 @@
                     $elem.append(alias);
                 }
             });
-
-            $containers.find("a").contextmenu(AddAliasPrompt);
-
-            const $usercard = $(".user-card-name");
-            $usercard.contextmenu(AddAliasPrompt);
 
             if(location.href.includes(`users/${id}`)) {
                 $usercard.append(alias);
